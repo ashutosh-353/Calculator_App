@@ -1,0 +1,197 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.calculator {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  max-width: 350px;
+  width: 100%;
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.display {
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+  text-align: right;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.previous-operand {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  word-wrap: break-word;
+  word-break: break-all;
+  min-height: 20px;
+}
+
+.current-operand {
+  color: white;
+  font-size: 28px;
+  font-weight: 300;
+  word-wrap: break-word;
+  word-break: break-all;
+  min-height: 35px;
+  margin-top: 5px;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 500;
+  height: 60px;
+  border-radius: 15px;
+  transition: all 0.15s ease;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+button:hover::before {
+  left: 100%;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.number-btn {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
+.number-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.operator-btn {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+  color: white;
+  font-weight: 600;
+}
+
+.operator-btn:hover {
+  background: linear-gradient(135deg, #ff5252, #e53e3e);
+}
+
+.clear-btn {
+  background: linear-gradient(135deg, #feca57, #ff9ff3);
+  color: white;
+  font-weight: 600;
+}
+
+.clear-btn:hover {
+  background: linear-gradient(135deg, #fed330, #ff6b9d);
+}
+
+.equals-btn {
+  background: linear-gradient(135deg, #5f27cd, #341f97);
+  color: white;
+  font-weight: 600;
+  grid-column: span 2;
+}
+
+.equals-btn:hover {
+  background: linear-gradient(135deg, #6c5ce7, #4834d4);
+}
+
+.zero-btn {
+  grid-column: span 2;
+}
+
+.error {
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+@media (max-width: 480px) {
+  .calculator {
+    padding: 20px;
+    max-width: 300px;
+  }
+
+  button {
+    height: 55px;
+    font-size: 16px;
+  }
+
+  .current-operand {
+    font-size: 24px;
+  }
+}
