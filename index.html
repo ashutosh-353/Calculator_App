@@ -16,7 +16,7 @@
         <button class="clear-btn" onclick="calculator.clear()">AC</button>
         <button class="clear-btn" onclick="calculator.delete()">DEL</button>
         <button class="operator-btn" onclick="calculator.chooseOperation('÷')">
-          ÷
+          /
         </button>
         <button class="operator-btn" onclick="calculator.chooseOperation('×')">
           ×
@@ -57,6 +57,10 @@
         <button class="number-btn" onclick="calculator.appendNumber('3')">
           3
         </button>
+        <button class="number-btn" onclick="calculator.appendNumber('.')">
+          .
+        </button>
+
         <button class="equals-btn" onclick="calculator.compute()" rowspan="2">
           =
         </button>
@@ -67,9 +71,7 @@
         >
           0
         </button>
-        <button class="number-btn" onclick="calculator.appendNumber('.')">
-          .
-        </button>
+        
       </div>
     </div>
 
