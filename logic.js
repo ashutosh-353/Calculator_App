@@ -52,11 +52,11 @@ class Calculator {
       return;
     }
 
-    if (this.currentOperand === "") return;
+    if (this.currentOperand === "" || this.currentOperand === "Error") return;
 
     try {
-      // Evaluate full geometric string. Handle power operators.
-      let expression = this.currentOperand.replace(/×/g, '*').replace(/÷/g, '/').replace(/\^/g, '**');
+      // Evaluate full geometric string. Handle power operators. Ensure string typing.
+      let expression = this.currentOperand.toString().replace(/×/g, '*').replace(/÷/g, '/').replace(/\^/g, '**');
       let computation = new Function(`'use strict'; return (${expression})`)();
 
       if (isNaN(computation) || !isFinite(computation)) {
@@ -135,8 +135,8 @@ class Calculator {
 
       let fValue = h * (((arr[0] + arr[n]) / 2) + calcValue);
 
-      // Reset integration state and show results
-      this.currentOperand = Math.round((fValue + Number.EPSILON) * 100000000000000) / 100000000000000;
+      // Reset integration state and show results explicitly cast to string
+      this.currentOperand = (Math.round((fValue + Number.EPSILON) * 100000000000000) / 100000000000000).toString();
       this.isIntegrating = false;
       this.integrationStep = 0;
       this.previousOperand = `Final answer for ∫(${a}, ${b}) ${this.integrationParams.fx}:`;
