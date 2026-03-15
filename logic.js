@@ -21,7 +21,10 @@ class Calculator {
   }
 
   appendNumber(number) {
-    if (number === "." && this.currentOperand.includes(".")) return;
+    if (number === "." && this.currentOperand.includes(".") && !this.isIntegrating) {
+      const chunks = this.currentOperand.split(/[\+\-\*\/\^\(\)]/);
+      if (chunks[chunks.length - 1].includes(".")) return;
+    }
     this.currentOperand = this.currentOperand.toString() + number.toString();
     this.updateDisplay();
   }
@@ -37,20 +40,9 @@ class Calculator {
   }
 
   chooseOperation(operation) {
-    if (this.currentOperand === "" && !this.isIntegrating) return;
-    if (this.previousOperand !== "" && !this.isIntegrating) {
-      this.compute();
-    }
+    if (this.currentOperand === "" && !this.isIntegrating && operation !== "-" && operation !== "(") return;
 
-    if (this.isIntegrating) {
-      this.currentOperand = this.currentOperand.toString() + operation.toString();
-      this.updateDisplay();
-      return;
-    }
-
-    this.operation = operation;
-    this.previousOperand = this.currentOperand;
-    this.currentOperand = "";
+    this.currentOperand = this.currentOperand.toString() + operation.toString();
     this.updateDisplay();
   }
 
@@ -59,44 +51,28 @@ class Calculator {
       this.handleIntegrationStep();
       return;
     }
-    let computation;
-    const prev = parseFloat(this.previousOperand);
-    const current = parseFloat(this.currentOperand);
 
-    if (isNaN(prev) || isNaN(current)) return;
+    if (this.currentOperand === "") return;
 
-    switch (this.operation) {
-      case "+":
-        computation = prev + current;
-        break;
-      case "-":
-        computation = prev - current;
-        break;
-      case "*":
-        computation = prev * current;
-        break;
-      case "÷":
-        if (current === 0) {
-          this.showError();
-          return;
-        }
-        computation = prev / current;
-        break;
-      case "^":
-        computation = Math.pow(prev, current);
-        break;
-      default:
+    try {
+      // Evaluate full geometric string. Handle power operators.
+      let expression = this.currentOperand.replace(/×/g, '*').replace(/÷/g, '/').replace(/\^/g, '**');
+      let computation = new Function(`'use strict'; return (${expression})`)();
+
+      if (isNaN(computation) || !isFinite(computation)) {
+        this.showError();
         return;
+      }
+
+      // Fix floating point precision issues
+      computation = Math.round((computation + Number.EPSILON) * 100000000000000) / 100000000000000;
+
+      this.previousOperand = this.currentOperand + " =";
+      this.currentOperand = computation.toString();
+      this.operation = undefined;
+    } catch (e) {
+      this.showError();
     }
-
-    // Fix floating point precision issues
-    computation =
-      Math.round((computation + Number.EPSILON) * 100000000000000) /
-      100000000000000;
-
-    this.currentOperand = computation;
-    this.operation = undefined;
-    this.previousOperand = "";
     this.updateDisplay();
   }
 
@@ -209,27 +185,11 @@ class Calculator {
   updateDisplay() {
     if (this.currentOperand === "") {
       this.currentOperandElement.innerText = "0";
-    } else if (this.isIntegrating && this.integrationStep === 1) {
-      // Don't try to format as a number if we are actively typing a math expression string
-      this.currentOperandElement.innerText = this.currentOperand;
-    } else if (this.isIntegrating || isNaN(parseFloat(this.currentOperand))) {
-      this.currentOperandElement.innerText = this.currentOperand;
     } else {
-      this.currentOperandElement.innerText = this.getDisplayNumber(
-        this.currentOperand
-      );
+      this.currentOperandElement.innerText = this.currentOperand;
     }
 
-    if (this.isIntegrating) {
-      this.previousOperandElement.innerText = this.previousOperand;
-    } else if (this.operation != null) {
-      this.previousOperandElement.innerText = `${this.getDisplayNumber(
-        this.previousOperand
-      )} ${this.operation}`;
-    } else {
-      // Could be the result of integration showing the expression
-      this.previousOperandElement.innerText = this.previousOperand;
-    }
+    this.previousOperandElement.innerText = this.previousOperand;
   }
 }
 
@@ -244,7 +204,7 @@ const calculator = new Calculator(
 document.addEventListener("keydown", function (event) {
   const key = event.key;
 
-  if ((key >= "0" && key <= "9") || key === "." || key === "x") {
+  if ((key >= "0" && key <= "9") || key === "." || key === "x" || key === "(" || key === ")") {
     calculator.appendNumber(key);
   } else if (key === "+") {
     calculator.chooseOperation("+");
@@ -254,7 +214,7 @@ document.addEventListener("keydown", function (event) {
     calculator.chooseOperation("*");
   } else if (key === "/") {
     event.preventDefault();
-    calculator.chooseOperation("÷");
+    calculator.chooseOperation("/");
   } else if (key === "^") {
     calculator.chooseOperation("^");
   } else if (key === "Enter" || key === "=") {

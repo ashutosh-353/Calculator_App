@@ -22,31 +22,33 @@
       <button class="number-btn func-btn" onclick="calculator.appendNumber('x')">x</button>
 
       <!-- Second Row -->
+      <button class="operator-btn" onclick="calculator.appendNumber('(')">(</button>
+      <button class="operator-btn" onclick="calculator.appendNumber(')')">)</button>
+      <button class="operator-btn" onclick="calculator.chooseOperation('^')">^</button>
+      <button class="operator-btn" onclick="calculator.chooseOperation('/')">/</button>
+
+      <!-- Third Row -->
       <button class="number-btn" onclick="calculator.appendNumber('7')">7</button>
       <button class="number-btn" onclick="calculator.appendNumber('8')">8</button>
       <button class="number-btn" onclick="calculator.appendNumber('9')">9</button>
-      <button class="operator-btn" onclick="calculator.chooseOperation('÷')">/</button>
-
-      <!-- Third Row -->
-      <button class="number-btn" onclick="calculator.appendNumber('4')">4</button>
-      <button class="number-btn" onclick="calculator.appendNumber('5')">5</button>
-      <button class="number-btn" onclick="calculator.appendNumber('6')">6</button>
       <button class="operator-btn" onclick="calculator.chooseOperation('*')">×</button>
 
       <!-- Fourth Row -->
+      <button class="number-btn" onclick="calculator.appendNumber('4')">4</button>
+      <button class="number-btn" onclick="calculator.appendNumber('5')">5</button>
+      <button class="number-btn" onclick="calculator.appendNumber('6')">6</button>
+      <button class="operator-btn" onclick="calculator.chooseOperation('-')">-</button>
+
+      <!-- Fifth Row -->
       <button class="number-btn" onclick="calculator.appendNumber('1')">1</button>
       <button class="number-btn" onclick="calculator.appendNumber('2')">2</button>
       <button class="number-btn" onclick="calculator.appendNumber('3')">3</button>
-      <button class="operator-btn" onclick="calculator.chooseOperation('-')">-</button>
-
-      <!-- Fifth Row: zero, point, power, plus -->
-      <button class="number-btn" onclick="calculator.appendNumber('0')">0</button>
-      <button class="number-btn" onclick="calculator.appendNumber('.')">.</button>
-      <button class="operator-btn" onclick="calculator.chooseOperation('^')">^</button>
       <button class="operator-btn" onclick="calculator.chooseOperation('+')">+</button>
 
       <!-- Bottom Row -->
-      <button class="equals-btn span-four" onclick="calculator.compute()">=</button>
+      <button class="number-btn" onclick="calculator.appendNumber('.')">.</button>
+      <button class="number-btn zero-btn" onclick="calculator.appendNumber('0')">0</button>
+      <button class="equals-btn" onclick="calculator.compute()">=</button>
     </div>
   </div>
 
